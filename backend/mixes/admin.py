@@ -15,6 +15,7 @@ from .models import (
 class MixesTobaccoInline(admin.StackedInline):
     model = MixesTobacco
     min_num = 2
+    extra = 0
 
 
 @admin.register(Lines)
@@ -31,7 +32,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
     def get_lines(self, obj):
-        return '\n'.join([p.name + ',' for p in obj.lines.all()])
+        return ', '.join([p.name for p in obj.lines.all()])
     get_lines.short_description = 'Линейки'
 
 
@@ -48,9 +49,12 @@ class FlavorAdmin(admin.ModelAdmin):
 
 @admin.register(Mixes)
 class MixesAdmin(admin.ModelAdmin):
-    list_display = ('author', 'name', 'pub_date')
-    list_filter = ('pub_date', 'tobaccos')
+    list_display = ('author', 'name', 'get_tobaccos', 'pub_date')
     inlines = [MixesTobaccoInline]
+
+    def get_tobaccos(self, obj):
+        return ', '.join([p.name for p in obj.tobaccos.all()])
+    get_tobaccos.short_description = 'Табаки'
 
 
 @admin.register(Strength)
@@ -81,5 +85,5 @@ class TobaccoAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
     def get_flavor(self, obj):
-        return '\n'.join([p.name + ',' for p in obj.flavor.all()])
+        return ', '.join([p.name for p in obj.flavor.all()])
     get_flavor.short_description = 'Ароматы'

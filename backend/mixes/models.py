@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 User = get_user_model()
 MAX_CHAR_LENGTH = 100
@@ -159,16 +160,21 @@ class Mixes(models.Model):
         max_length=MAX_CHAR_LENGTH,
         unique=True,
     )
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(auto_now_add=True,
+                                    verbose_name='Дата публикации')
     tobaccos = models.ManyToManyField(
         Tobacco,
         through='MixesTobacco',
         db_index=True,
+        verbose_name='Табаки'
     )
 
     class Meta:
         verbose_name = 'Микс'
         verbose_name_plural = 'Миксы'
+
+    def __str__(self):
+        return self.name
 
 
 class MixesTobacco(models.Model):
@@ -186,7 +192,11 @@ class MixesTobacco(models.Model):
         verbose_name='Табак',
         help_text='Табак',
     )
-    amount = models.PositiveSmallIntegerField(verbose_name='Процент')
+    amount = models.PositiveSmallIntegerField(verbose_name='Процент',
+                                              default=50,
+                                              validators=[
+                                                  MaxValueValidator(100),
+                                                  MinValueValidator(1)])
 
     class Meta:
         verbose_name = 'Ингридиент'
