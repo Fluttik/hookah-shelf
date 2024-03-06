@@ -79,6 +79,10 @@ class Tobacco(models.Model):
     )
 
     class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['company', 'tobacco_line', 'name'],
+            name='tobacco_unique'
+            )]
         ordering = ('company', 'tobacco_line', 'name')
         verbose_name = 'Табак'
         verbose_name_plural = 'Табаки'
