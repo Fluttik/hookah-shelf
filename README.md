@@ -27,7 +27,7 @@ cd hookah-shelf
 ```
 
 ##### Cоздаем и активируем виртуальное окружение:
-###### Windows
+###### **Windows**
 ---
 ```bash
 python -m venv venv 
@@ -36,7 +36,7 @@ python -m venv venv
 source venv/Scripts/activate 
 ```
 ---
- ##### Linux
+ ###### **Linux**
 ---
 ```bash
 python3 -m venv venv 
